@@ -38,6 +38,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Templates\MemberLibrary\SQLServerTemplate.json" />
+    <None Include="Templates\Parameter\SQLServerTemplateParameter.json" />
     <None Include="Tools\AzCopy.exe" />
     <None Include="Tools\Microsoft.Data.Edm.dll">
       <Visible>False</Visible>
