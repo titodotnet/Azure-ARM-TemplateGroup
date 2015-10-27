@@ -1,6 +1,11 @@
 ﻿{
-    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-    }
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "SQLServerInstanceName": { "value": "" },
+    "SQLServerInstanceLocation": { "value": "West Europe" },
+    "SQLServerInstanceAdminLogin": { "value": "" },
+    "SQLServerInstanceAdminLoginPassword": { "value": "" },
+    "SQLServerInstanceVersion": { "value": "2.0" }
+  }
 }

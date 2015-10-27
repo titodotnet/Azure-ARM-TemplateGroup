@@ -2,6 +2,26 @@
   "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    "SQLServerInstanceName": {
+      "type": "string"
+    },
+    "SQLServerInstanceLocation": {
+      "type": "string"
+    },
+    "SQLServerInstanceAdminLogin": {
+      "type": "string"
+    },
+    "SQLServerInstanceAdminLoginPassword": {
+      "type": "securestring"
+    },
+    "SQLServerInstanceVersion": {
+      "type": "string",
+      "defaultValue": "12.0",
+      "allowedValues": [
+        "12.0",
+        "2.0"
+      ]
+    }
   },
   "variables": {
   },
@@ -16,9 +36,12 @@
           "uri": "https://github.com/titodotnet/Azure-ARM-TemplateGroup/raw/master/ARMTemplateLibrary/Templates/MemberLibrary/SQLServerTemplate.json",
           "contentVersion": "1.0.0.0"
         },
-        "parametersLink": {
-          "uri": "https://github.com/titodotnet/Azure-ARM-TemplateGroup/raw/master/ARMTemplateLibrary/Templates/DeploymentTemplate.param.dev.json",
-          "contentVersion": "1.0.0.0"
+        "parameters": {
+          "SQLServerInstanceName": { "value": "[parameters('SQLServerInstanceName')]" },
+          "SQLServerInstanceLocation": { "value": "[parameters('SQLServerInstanceLocation')]" },
+          "SQLServerInstanceAdminLogin": { "value": "[parameters('SQLServerInstanceAdminLogin')]" },
+          "SQLServerInstanceAdminLoginPassword": { "value": "[parameters('SQLServerInstanceAdminLoginPassword')]" },
+          "SQLServerInstanceVersion": { "value": "[parameters('SQLServerInstanceVersion')]" }
         }
       }
     }
