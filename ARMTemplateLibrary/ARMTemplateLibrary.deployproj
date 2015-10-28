@@ -25,6 +25,7 @@
   <Import Condition=" Exists('$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Deployment\1.1\DeploymentProject.targets') " Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Deployment\1.1\DeploymentProject.targets" />
   <!-- vertag<:>end -->
   <ItemGroup>
+    <Folder Include="Scripts\Operational\" />
     <Folder Include="Tools\" />
   </ItemGroup>
   <ItemGroup>
@@ -34,7 +35,10 @@
     <Content Include="Scripts\Deploy-AzureResourceGroup.ps1" />
     <Content Include="Templates\DeploymentTemplate.json" />
     <None Include="Scripts\Common\Parameter.psm1" />
+    <None Include="Scripts\Common\Utility.psm1" />
     <None Include="Scripts\Manage-ResourceDeployment.ps1" />
+    <None Include="Scripts\Manage-SQLServerDeployment.ps1" />
+    <None Include="Scripts\Preparation\SQLServerPreparation.psm1" />
     <None Include="Templates\DeploymentTemplate.param.dev.json" />
   </ItemGroup>
   <ItemGroup>
