@@ -28,7 +28,7 @@
   "resources": [
     {
       "apiVersion": "2015-01-01",
-      "name": "SQL server nested template",
+      "name": "SQLServerNestedTemplate",
       "type": "Microsoft.Resources/deployments",
       "properties": {
         "mode": "Incremental",
