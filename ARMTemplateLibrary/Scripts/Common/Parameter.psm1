@@ -9,3 +9,4 @@ $Global:Location = "West Europe"
 $Global:DBResourceGroupName = "titotestrg$Environment"
 $Global:SqlServerName = "titotestsqlserver$Environment"
 $Global:DynamicParameterHash = New-Object -TypeName Hashtable
+$Global:TargetSqlServerUpgradeVersion = "12.0"

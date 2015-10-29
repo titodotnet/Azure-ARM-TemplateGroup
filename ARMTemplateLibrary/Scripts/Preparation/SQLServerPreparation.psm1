@@ -87,3 +87,62 @@ function Create-SQLServerDeployment{
 	# Perform new DBResourceGroup deployment
 	New-AzureRmResourceGroupDeployment -ResourceGroupName $DBResourceGroupName -Name "titotestdbdeploymenttest1" -TemplateFile $TemplateFilePath -TemplateParameterFile $UpdateParameterFilePath 
 }
+
+<#
+	.Synopsis
+	Upgrade SQL server.
+	
+	.SqlServerResourceGroupName
+	Name of the ResourceGroup of the respective SqlL server.
+
+	.SqlServerName
+	Name of the Sql server.
+#>
+function Upgrade-SqlServer{
+	[CmdletBinding()]
+	param(
+		[Parameter(ParameterSetName='SQLServerUpgrade', Mandatory=$true)]
+		[ValidateNotNullOrEmpty()]
+		[string]
+		$SqlServerResourceGroupName,
+
+		[Parameter(ParameterSetName='SQLServerUpgrade', Mandatory=$true)]
+		[ValidateNotNullOrEmpty()]
+		[string]
+		$SqlServerName,
+
+		[Parameter(ParameterSetName='SQLServerUpgrade', Mandatory=$true)]
+		[ValidateNotNullOrEmpty()]
+		[string]
+		$TargetSqlServerVersion
+	)
+
+	$SqlServerResourceGroupInstance = Get-AzureRmResourceGroup | Where-Object {$_.ResourceGroupName -eq $SqlServerResourceGroupName}
+	
+	if($SqlServerResourceGroupInstance -eq $null)
+	{
+		Write-Output "Resource group with name '$SqlServerResourceGroupName' not available."
+	}
+	else
+	{
+		$SqlServerResourceInstance = Get-AzureRmSqlServer -ResourceGroupName $SqlServerResourceGroupName | Where-Object {$_.ServerName -eq $SqlServerName}
+
+		if($SqlServerResourceInstance -eq $null)
+		{
+			Write-Output "Sql server with name '$SqlServerName' not available."
+		}
+		else
+		{
+			if($SqlServerResourceInstance.ServerVersion -eq $TargetSqlServerVersion)
+			{
+				Write-Output "Sql server $SqlServerName is already  with version $SqlServerResourceInstance.ServerVersion"
+			}
+			else
+			{
+				Write-Output "Start upgrading the sql server $SqlServerName."
+				Start-AzureRmSqlServerUpgrade -ServerVersion $TargetSqlServerVersion -ServerName $SqlServerName -ResourceGroupName $SqlServerResourceGroupName
+				Write-Output "Upgrade sql server $SqlServerName instantiated."
+			}			
+		}		
+	}	
+}
