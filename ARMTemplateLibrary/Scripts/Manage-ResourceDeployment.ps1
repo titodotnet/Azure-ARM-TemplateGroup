@@ -40,6 +40,12 @@ function Create-DBResourceGroup{
 #Switch-AzureMode AzureResourceManager
 
 # Action region
+
+# Select subscription
 Execute-SelectSubscription
+
+# Create DB resource group
 Create-DBResourceGroup
+
+# Create SQL server deployment
 Create-SQLServerDeployment -ParameterFilePath $TemplateParametersFile -UpdateParameterFilePath $UpdatedTemplateParametersFile -TemplateFilePath $TemplateFile
