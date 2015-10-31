@@ -37,7 +37,7 @@
   },
   "resources": [
     {
-      "name": "[parameters('SQLDatabaseInstanceName')]",
+      "name": "[concat(parameters('SQLDatabaseInstanceName'),'/databases')]",
       "type": "Microsoft.Sql/servers/databases",
       "location": "[parameters('SQLServerInstanceLocation')]",
       "apiVersion": "2014-04-01-preview",
