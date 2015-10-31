@@ -42,7 +42,7 @@
       "location": "[parameters('SQLServerInstanceLocation')]",
       "apiVersion": "2014-04-01-preview",
       "dependsOn": [
-        "[resourceId('Microsoft.Sql/servers', parameters('SQLServerInstanceName'))]"
+        "[concat('Microsoft.Sql/servers/', parameters('SQLServerInstanceName'))]"
       ],
       "tags": {
         "displayName": "SQLDatabaseInstance"
