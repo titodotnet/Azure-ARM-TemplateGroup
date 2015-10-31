@@ -23,7 +23,7 @@ $SqlDBDeploymentTemplatePath = [System.IO.Path]::Combine($PSScriptRoot, $SqlDBDe
 $SqlDBParameterTemplatePath = "..\Templates\MainTemplate\SqlDB\SqlDBDeploymentTemplate.param.{0}.json" -f $DeploymentConfig
 $SqlDBParameterTemplatePath = [System.IO.Path]::Combine($PSScriptRoot, $SqlDBParameterTemplatePath)
 
-$SqlDBUpdatedParameterTemplatePath = "..\Templates\MainTemplate\SqlDB\SqlDBDeploymentTemplateUpdated.param.{0}.json" -f $SqlDBUpdatedParameterTemplatePath
+$SqlDBUpdatedParameterTemplatePath = "..\Templates\MainTemplate\SqlDB\SqlDBDeploymentTemplateUpdated.param.{0}.json" -f $DeploymentConfig
 $SqlDBUpdatedParameterTemplatePath = [System.IO.Path]::Combine($PSScriptRoot, $SqlDBUpdatedParameterTemplatePath)
 
 <#
@@ -58,10 +58,10 @@ Execute-SelectSubscription
 Create-DBResourceGroup
 
 # Create SQL server deployment
-Create-SQLServerDeployment -ParameterFilePath $TemplateParametersFile -UpdateParameterFilePath $UpdatedTemplateParametersFile -TemplateFilePath $TemplateFile
+Create-SQLServerDeployment -ParameterFilePath $TemplateParametersFile -UpdateParameterFilePath $UpdatedTemplateParametersFile -TemplateFilePath $TemplateFile -SqlServerResourceGroupName $DBResourceGroupName
 
 # Upgrade Sql server to version 12.0
 Upgrade-SqlServer -SqlServerResourceGroupName $DBResourceGroupName -SqlServerName $SqlServerName -TargetSqlServerVersion $TargetSqlServerUpgradeVersion
 
 # Create Sql DB deployment
-Create-SqlDBDeployment -ParameterFilePath $SqlDBParameterTemplatePath -UpdateParameterFilePath $SqlDBUpdatedParameterTemplatePath -TemplateFilePath $SqlDBDeploymentTemplatePath
+Create-SqlDBDeployment -ParameterFilePath $SqlDBParameterTemplatePath -UpdateParameterFilePath $SqlDBUpdatedParameterTemplatePath -TemplateFilePath $SqlDBDeploymentTemplatePath -SqlDBResourceGroupName $DBResourceGroupName

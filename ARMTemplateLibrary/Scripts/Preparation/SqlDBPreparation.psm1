@@ -17,19 +17,9 @@ $SqlDBParameterHash = New-Object -TypeName Hashtable
 	Path of the update paramter file
 #>
 function Add-SqlDBDynamicParams{
-	[CmdletBinding()]
-	param(
-		[Parameter(ParameterSetName='SqlDBPreparation', Mandatory=$true)]
-		[ValidateNotNullOrEmpty()]
-		[string]
-		$ParameterFilePath,
-
-		[Parameter(ParameterSetName='SqlDBPreparation', Mandatory=$true)]
-		[ValidateNotNullOrEmpty()]
-		[string]
-		$UpdateParameterFilePath	
-	)
 	
+	Write-Output "Preparing Sql DB dynamic parameters"
+
 	$SqlServerInstanceParameterName = "SQLServerInstanceName"
 	$SqlServerLocationName = "SQLServerInstanceLocation"
 	$EnvironmentParameterName = "EnvironmentName"
@@ -37,7 +27,7 @@ function Add-SqlDBDynamicParams{
 	# Add dynamic details to hash table
 	$SqlDBParameterHash.Add($SqlServerLocationName, $Location)
 	$SqlDBParameterHash.Add($SqlServerInstanceParameterName, $SqlServerName)
-	$SqlDBParameterHash.Add($EnvironmentParameterName,$Environment)
+	$SqlDBParameterHash.Add($EnvironmentParameterName, $Environment)
 }
 
 <#
@@ -52,6 +42,9 @@ function Add-SqlDBDynamicParams{
 
 	.TemplateFilePath
 	Path of the template file
+	
+	.SqlDBResourceGroupName
+	Name of the ResourceGroup of the respective SqlL server.
 #>
 function Create-SqlDBDeployment{
 	[CmdletBinding()]
@@ -69,15 +62,20 @@ function Create-SqlDBDeployment{
 		[Parameter(ParameterSetName='SqlDBPreparation', Mandatory=$true)]
 		[ValidateNotNullOrEmpty()]
 		[string]
-		$TemplateFilePath	
+		$TemplateFilePath,
+		
+		[Parameter(ParameterSetName='SqlDBPreparation', Mandatory=$true)]
+		[ValidateNotNullOrEmpty()]
+		[string]
+		$SqlDBResourceGroupName
 	)
 	
 	# Prepare Sql DB dynamic parameter hash
-	Add-SqlDBDynamicParams -ParameterFilePath $ParameterFilePath -UpdateParameterFilePath $UpdateParameterFilePath
+	Add-SqlDBDynamicParams
 
 	# Create the paramter file with updated value
 	Create-UpdatedParamaterTemplate -ParameterFilePath $ParameterFilePath -UpdateParameterFilePath $UpdateParameterFilePath -ParameterHash $SqlDBParameterHash
 
 	# Perform new DBResourceGroup deployment for Sql DB
-	New-AzureRmResourceGroupDeployment -ResourceGroupName $DBResourceGroupName -Name "titotestsqldbdeploymenttest1" -TemplateFile $TemplateFilePath -TemplateParameterFile $UpdateParameterFilePath 
+	New-AzureRmResourceGroupDeployment -ResourceGroupName $SqlDBResourceGroupName -Name "titotestsqldbdeploymenttest1" -TemplateFile $TemplateFilePath -TemplateParameterFile $UpdateParameterFilePath 
 }

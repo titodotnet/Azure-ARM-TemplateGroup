@@ -32,7 +32,7 @@ function Create-UpdatedParamaterTemplate{
 	)
 
 	
-	$JsonContent = Get-Content $TemplateParametersFile -Raw | ConvertFrom-Json
+	$JsonContent = Get-Content $ParameterFilePath -Raw | ConvertFrom-Json
 	$JsonParameters = $JsonContent | Get-Member -Type NoteProperty | Where-Object {$_.Name -eq "parameters"}
 
 	if ($JsonParameters -eq $null) {
@@ -49,5 +49,7 @@ function Create-UpdatedParamaterTemplate{
 			$ParameterValue.value = $ParameterHash[$_.Name]
 		}
 	}
-	$JsonContent | ConvertTo-Json | Out-File $UpdatedTemplateParametersFile
+	$JsonContent | ConvertTo-Json | Out-File $UpdateParameterFilePath
+
+	Write-Output "Created the parameter template at path $UpdateParameterFilePath"
 }

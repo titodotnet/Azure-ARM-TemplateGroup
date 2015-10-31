@@ -17,18 +17,6 @@ $SQLServerParameterHash = New-Object -TypeName Hashtable
 	Path of the update paramter file
 #>
 function Add-SQLServerDynamicParams{
-	[CmdletBinding()]
-	param(
-		[Parameter(ParameterSetName='SQLServerpreperaation', Mandatory=$true)]
-		[ValidateNotNullOrEmpty()]
-		[string]
-		$ParameterFilePath,
-
-		[Parameter(ParameterSetName='SQLServerpreperaation', Mandatory=$true)]
-		[ValidateNotNullOrEmpty()]
-		[string]
-		$UpdateParameterFilePath	
-	)
 	
 	$SqlServerInstanceParameterName = "SQLServerInstanceName"
 	$SqlDbAdminUserParameterName = "SQLServerInstanceAdminLogin"
@@ -58,6 +46,9 @@ function Add-SQLServerDynamicParams{
 
 	.TemplateFilePath
 	Path of the template file
+
+	.SqlServerResourceGroupName
+	Name of the ResourceGroup of the respective SqlL server.
 #>
 function Create-SQLServerDeployment{
 	[CmdletBinding()]
@@ -75,17 +66,35 @@ function Create-SQLServerDeployment{
 		[Parameter(ParameterSetName='SQLServerPreparation', Mandatory=$true)]
 		[ValidateNotNullOrEmpty()]
 		[string]
-		$TemplateFilePath	
+		$TemplateFilePath,
+		
+		[Parameter(ParameterSetName='SQLServerPreparation', Mandatory=$true)]
+		[ValidateNotNullOrEmpty()]
+		[string]
+		$SqlServerResourceGroupName	
 	)
 	
-	# Prepare SQL server dynamic parameter hash
-	Add-SQLServerDynamicParams -ParameterFilePath $ParameterFilePath -UpdateParameterFilePath $UpdateParameterFilePath
+	$SqlServerResourceGroupInstance = Get-AzureRmResourceGroup | Where-Object {$_.ResourceGroupName -eq $SqlServerResourceGroupName}
+	
+	if($SqlServerResourceGroupInstance -eq $null)
+	{
+		Write-Output "Resource group with name '$SqlServerResourceGroupName' not available."
+	}
+	else
+	{
+		$SqlServerResourceInstance = Get-AzureRmSqlServer -ResourceGroupName $SqlServerResourceGroupName | Where-Object {$_.ServerName -eq $SqlServerName}
 
-	# Create the paramter file with updated value
-	Create-UpdatedParamaterTemplate -ParameterFilePath $ParameterFilePath -UpdateParameterFilePath $UpdateParameterFilePath -ParameterHash $SQLServerParameterHash
+		if($SqlServerResourceInstance -eq $null -or ($SqlServerResourceInstance -ne $null -and $SqlServerResourceInstance.ServerVersion -eq "2.0")){
+			# Prepare SQL server dynamic parameter hash
+			Add-SQLServerDynamicParams
 
-	# Perform new DBResourceGroup deployment
-	New-AzureRmResourceGroupDeployment -ResourceGroupName $DBResourceGroupName -Name "titotestdbserverdeploymenttest1" -TemplateFile $TemplateFilePath -TemplateParameterFile $UpdateParameterFilePath 
+			# Create the paramter file with updated value
+			Create-UpdatedParamaterTemplate -ParameterFilePath $ParameterFilePath -UpdateParameterFilePath $UpdateParameterFilePath -ParameterHash $SQLServerParameterHash
+
+			# Perform new DBResourceGroup deployment
+			New-AzureRmResourceGroupDeployment -ResourceGroupName $SqlServerResourceGroupName -Name "titotestdbserverdeploymenttest1" -TemplateFile $TemplateFilePath -TemplateParameterFile $UpdateParameterFilePath 
+		}
+	}	
 }
 
 <#
@@ -135,12 +144,22 @@ function Upgrade-SqlServer{
 		{
 			if($SqlServerResourceInstance.ServerVersion -eq $TargetSqlServerVersion)
 			{
-				Write-Output "Sql server $SqlServerName is already  with version $SqlServerResourceInstance.ServerVersion"
+				Write-Output "Sql server $SqlServerName is already  with version $($SqlServerResourceInstance.ServerVersion)"
 			}
 			else
 			{
 				Write-Output "Start upgrading the sql server $SqlServerName."
 				Start-AzureRmSqlServerUpgrade -ServerVersion $TargetSqlServerVersion -ServerName $SqlServerName -ResourceGroupName $SqlServerResourceGroupName
+				
+				$SqlServerUpgradeStatus = Get-AzureRmResourceGroupDeployment -ResourceGroupName $SqlServerResourceGroupName
+				Write-Output "Upgrade in progress..."
+				
+				While($SqlServerUpgradeStatus[0].ProvisioningState -ne "Failed" -and $SqlServerUpgradeStatus[0].ProvisioningState -ne "Succeeded"){
+					Start-Sleep -Seconds 10
+					Write-Host -NoNewline -BackgroundColor Green "."
+					$SqlServerUpgradeStatus = Get-AzureRmResourceGroupDeployment -ResourceGroupName $SqlServerResourceGroupName
+				}
+
 				Write-Output "Upgrade sql server $SqlServerName instantiated."
 			}			
 		}		

@@ -60,10 +60,6 @@
       "name": "SqlDBNestedTemplate",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
-      "dependsOn": [ ],
-      "tags": {
-        "displayName": "SqlDBNestedTemplate"
-      },
       "properties": {
         "mode": "Incremental",
         "templateLink": {
