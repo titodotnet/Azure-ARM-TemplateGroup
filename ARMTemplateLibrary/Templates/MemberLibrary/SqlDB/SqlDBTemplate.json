@@ -1,0 +1,60 @@
+﻿{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "SQLDatabaseInstanceName": {
+      "type": "string"
+    },
+    "SQLDatabaseInstanceCollation": {
+      "type": "string",
+      "defaultValue": "SQL_Latin1_General_CP1_CI_AS"
+    },
+    "SQLDatabaseInstanceEdition": {
+      "type": "string",
+      "defaultValue": "Standard",
+      "allowedValues": [
+        "Basic",
+        "Business",
+        "Premium",
+        "Standard"
+      ]
+    },
+    "SQLServerInstanceName": {
+      "type": "string"
+    },
+    "SQLServerInstanceLocation": {
+      "type": "string"
+    },
+    "RequestedServiceObjectiveName": {
+      "type": "string",
+      "defaultValue": "S0",
+      "metadata": {
+        "description": "The name corresponding to the performance level for edition. The available options are: Shared, Basic, S0, S1, S2, S3, P1, P2, and P3."
+      }
+    }
+  },
+  "variables": {
+  },
+  "resources": [
+    {
+      "name": "[parameters('SQLDatabaseInstanceName')]",
+      "type": "Microsoft.Sql/servers/databases",
+      "location": "[parameters('SQLServerInstanceLocation')]",
+      "apiVersion": "2014-04-01-preview",
+      "dependsOn": [
+        "[resourceId('Microsoft.Sql/servers', parameters('SQLServerInstanceName'))]"
+      ],
+      "tags": {
+        "displayName": "SQLDatabaseInstance"
+      },
+      "properties": {
+        "collation": "[parameters('SQLDatabaseInstanceCollation')]",
+        "edition": "[parameters('SQLDatabaseInstanceEdition')]",
+        "maxSizeBytes": "268435456000",
+        "requestedServiceObjectiveName": "[parameters('RequestedServiceObjectiveName')]"
+      }
+    }
+  ],
+  "outputs": {
+  }
+}

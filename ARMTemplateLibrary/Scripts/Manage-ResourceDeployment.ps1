@@ -6,6 +6,7 @@ Import-Module (Join-Path $PSScriptRoot "Common\Parameter.psm1") -DisableNameChec
 Import-Module (Join-Path $PSScriptRoot "Common\Utility.psm1") -DisableNameChecking
 
 Import-Module (Join-Path $PSScriptRoot "Preparation\SQLServerPreparation.psm1") -DisableNameChecking
+Import-Module (Join-Path $PSScriptRoot "Preparation\SqlDBPreparation.psm1") -DisableNameChecking
 
 
 $TemplateFile = '..\Templates\DeploymentTemplate.json'
@@ -15,6 +16,15 @@ $UpdatedTemplateParametersFile = '..\Templates\DeploymentTemplateUpdated.param.d
 $TemplateFile = [System.IO.Path]::Combine($PSScriptRoot, $TemplateFile)
 $TemplateParametersFile = [System.IO.Path]::Combine($PSScriptRoot, $TemplateParametersFile)
 $UpdatedTemplateParametersFile = [System.IO.Path]::Combine($PSScriptRoot, $UpdatedTemplateParametersFile)
+
+$SqlDBDeploymentTemplatePath = "..\Templates\MainTemplate\SqlDB\SqlDBDeploymentTemplate.json"
+$SqlDBDeploymentTemplatePath = [System.IO.Path]::Combine($PSScriptRoot, $SqlDBDeploymentTemplatePath)
+
+$SqlDBParameterTemplatePath = "..\Templates\MainTemplate\SqlDB\SqlDBDeploymentTemplate.param.{0}.json" -f $DeploymentConfig
+$SqlDBParameterTemplatePath = [System.IO.Path]::Combine($PSScriptRoot, $SqlDBParameterTemplatePath)
+
+$SqlDBUpdatedParameterTemplatePath = "..\Templates\MainTemplate\SqlDB\SqlDBDeploymentTemplateUpdated.param.{0}.json" -f $SqlDBUpdatedParameterTemplatePath
+$SqlDBUpdatedParameterTemplatePath = [System.IO.Path]::Combine($PSScriptRoot, $SqlDBUpdatedParameterTemplatePath)
 
 <#
 	.Synopsis
@@ -53,3 +63,5 @@ Create-SQLServerDeployment -ParameterFilePath $TemplateParametersFile -UpdatePar
 # Upgrade Sql server to version 12.0
 Upgrade-SqlServer -SqlServerResourceGroupName $DBResourceGroupName -SqlServerName $SqlServerName -TargetSqlServerVersion $TargetSqlServerUpgradeVersion
 
+# Create Sql DB deployment
+Create-SqlDBDeployment -ParameterFilePath $SqlDBParameterTemplatePath -UpdateParameterFilePath $SqlDBUpdatedParameterTemplatePath -TemplateFilePath $SqlDBDeploymentTemplatePath

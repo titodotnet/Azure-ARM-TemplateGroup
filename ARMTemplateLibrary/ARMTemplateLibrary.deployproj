@@ -38,10 +38,15 @@
     <None Include="Scripts\Common\Utility.psm1" />
     <None Include="Scripts\Manage-ResourceDeployment.ps1" />
     <None Include="Scripts\Manage-SQLServerDeployment.ps1" />
+    <None Include="Scripts\Preparation\SqlDBPreparation.psm1" />
     <None Include="Scripts\Preparation\SQLServerPreparation.psm1" />
     <None Include="Templates\DeploymentTemplate.param.dev.json" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Templates\MainTemplate\SqlDB\SqlDBDeploymentTemplate.json" />
+    <None Include="Templates\MainTemplate\SqlDB\SqlDBDeploymentTemplate.param.dev.json" />
+    <None Include="Templates\MainTemplate\SqlDB\SqlDBDeploymentTemplate.param.prod.json" />
+    <None Include="Templates\MemberLibrary\SqlDB\SqlDBTemplate.json" />
     <None Include="Templates\MemberLibrary\SQLServerTemplate.json" />
     <None Include="Templates\Parameter\SQLServerTemplateParameter.json" />
     <None Include="Tools\AzCopy.exe" />

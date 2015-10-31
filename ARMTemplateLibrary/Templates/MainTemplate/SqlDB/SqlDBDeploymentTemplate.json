@@ -1,0 +1,86 @@
+﻿{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "DeploymentConfig": {
+      "type": "string",
+      "defaultValue": "Dev",
+      "allowedValues": [
+        "Dev",
+        "Prod"
+      ]
+    },
+    "EnvironmentName": {
+      "type": "string"
+    },
+    "SQLServerInstanceName": {
+      "type": "string"
+    },
+    "SQLServerInstanceLocation": {
+      "type": "string"
+    },
+    "SQLDatabaseInstanceCollation": {
+      "type": "string",
+      "defaultValue": "SQL_Latin1_General_CP1_CI_AS"
+    },
+    "SQLDatabaseInstanceEdition": {
+      "type": "string",
+      "defaultValue": "Standard",
+      "allowedValues": [
+        "Basic",
+        "Business",
+        "Premium",
+        "Standard"
+      ]
+    },
+    "RequestedServiceObjectiveName": {
+      "type": "string",
+      "defaultValue": "S0",
+      "metadata": {
+        "description": "The name corresponding to the performance level for edition. The available options are: Shared, Basic, S0, S1, S2, S3, P1, P2, and P3."
+      }
+    }
+  },
+  "variables": {
+    "TemplateBaseUrl": "https://github.com/titodotnet/Azure-ARM-TemplateGroup/raw/master/ARMTemplateLibrary/Templates/MemberLibrary/",
+    "DeploymentConfigSettings": {
+      "Dev": {
+        "SqlDBTemplate": "SqlDB/SqlDBTemplate.json"
+      },
+      "Prod": {
+        "SqlDBTemplate": "SqlDB/SqlDBTemplate.json"
+      }
+    },
+    "CurrentDeploymentConfig": "[variables('DeploymentConfigSettings')[parameters('DeploymentConfig')]]",
+    "SqlDBTemplate": "[concat(variables('TemplateBaseUrl'),variables('CurrentDeploymentConfig').SqlDBTemplate)]",
+    "SQLDatabaseInstanceName": "[concat('titotestsqldb',parameters('EnvironmentName'))]"
+  },
+  "resources": [
+    {
+      "name": "SqlDBNestedTemplate",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "dependsOn": [ ],
+      "tags": {
+        "displayName": "SqlDBNestedTemplate"
+      },
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('SqlDBTemplate')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "SQLDatabaseInstanceName": { "value": "[variables('SQLDatabaseInstanceName')]" },
+          "SQLDatabaseInstanceCollation": { "value": "[parameters('SQLDatabaseInstanceCollation')]" },
+          "SQLDatabaseInstanceEdition": { "value": "[parameters('SQLDatabaseInstanceEdition')]" },
+          "SQLServerInstanceName": { "value": "[parameters('SQLServerInstanceName')]" },
+          "SQLServerInstanceLocation": { "value": "[parameters('SQLServerInstanceLocation')]" },
+          "RequestedServiceObjectiveName": { "value": "[parameters('RequestedServiceObjectiveName')]" }
+        }
+      }
+    }
+  ],
+  "outputs": {
+  }
+}

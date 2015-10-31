@@ -48,7 +48,7 @@ function Add-SQLServerDynamicParams{
 
 <#
 	.Synopsis
-	Create DB resourcegroup.
+	Create Sql server deployment.
 	
 	.ParameterFilePath
 	Path of the Parameter file
@@ -85,7 +85,7 @@ function Create-SQLServerDeployment{
 	Create-UpdatedParamaterTemplate -ParameterFilePath $ParameterFilePath -UpdateParameterFilePath $UpdateParameterFilePath -ParameterHash $SQLServerParameterHash
 
 	# Perform new DBResourceGroup deployment
-	New-AzureRmResourceGroupDeployment -ResourceGroupName $DBResourceGroupName -Name "titotestdbdeploymenttest1" -TemplateFile $TemplateFilePath -TemplateParameterFile $UpdateParameterFilePath 
+	New-AzureRmResourceGroupDeployment -ResourceGroupName $DBResourceGroupName -Name "titotestdbserverdeploymenttest1" -TemplateFile $TemplateFilePath -TemplateParameterFile $UpdateParameterFilePath 
 }
 
 <#
