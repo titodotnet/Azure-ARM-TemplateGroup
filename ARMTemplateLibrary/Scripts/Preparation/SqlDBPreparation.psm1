@@ -22,12 +22,16 @@ function Add-SqlDBDynamicParams{
 
 	$SqlServerInstanceParameterName = "SQLServerInstanceName"
 	$SqlServerLocationName = "SQLServerInstanceLocation"
+	$SqlDbAdminUserParameterName = "SQLServerInstanceAdminLogin"
+	$SqlDbAdminPasswordParameterName = "SQLServerInstanceAdminLoginPassword"
 	$EnvironmentParameterName = "EnvironmentName"
 		
 	# Add dynamic details to hash table
 	$SqlDBParameterHash.Add($SqlServerLocationName, $Location)
 	$SqlDBParameterHash.Add($SqlServerInstanceParameterName, $SqlServerName)
 	$SqlDBParameterHash.Add($EnvironmentParameterName, $Environment)
+	$SqlDBParameterHash.Add($SqlDbAdminUserParameterName, $DbServerAdminCredentials)
+	$SqlDBParameterHash.Add($SqlDbAdminPasswordParameterName, $SqlDbAdminPasswordSecureString)
 }
 
 <#

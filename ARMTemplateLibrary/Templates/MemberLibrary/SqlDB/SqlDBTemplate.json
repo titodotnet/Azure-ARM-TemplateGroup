@@ -25,6 +25,12 @@
     "SQLServerInstanceLocation": {
       "type": "string"
     },
+    "SQLServerInstanceAdminLogin": {
+      "type": "string"
+    },
+    "SQLServerInstanceAdminLoginPassword": {
+      "type": "securestring"
+    },
     "RequestedServiceObjectiveName": {
       "type": "string",
       "defaultValue": "S0",
@@ -37,22 +43,51 @@
   },
   "resources": [
     {
-      "name": "[concat(parameters('SQLDatabaseInstanceName'),'/databases')]",
-      "type": "Microsoft.Sql/servers/databases",
+      "name": "[parameters('SQLServerInstanceName')]",
+      "type": "Microsoft.Sql/servers",
       "location": "[parameters('SQLServerInstanceLocation')]",
       "apiVersion": "2014-04-01-preview",
-      "dependsOn": [
-        "[concat('Microsoft.Sql/servers/', parameters('SQLServerInstanceName'))]"
-      ],
       "tags": {
-        "displayName": "SQLDatabaseInstance"
+        "displayName": "SQLServerInstance"
       },
       "properties": {
-        "collation": "[parameters('SQLDatabaseInstanceCollation')]",
-        "edition": "[parameters('SQLDatabaseInstanceEdition')]",
-        "maxSizeBytes": "268435456000",
-        "requestedServiceObjectiveName": "[parameters('RequestedServiceObjectiveName')]"
-      }
+        "administratorLogin": "[parameters('SQLServerInstanceAdminLogin')]",
+        "administratorLoginPassword": "[parameters('SQLServerInstanceAdminLoginPassword')]",
+        "version": "12.0"
+      },
+      "resources": [
+        {
+          "name": "[parameters('SQLDatabaseInstanceName')]",
+          "type": "databases",
+          "location": "[parameters('SQLServerInstanceLocation')]",
+          "apiVersion": "2014-04-01-preview",
+          "dependsOn": [
+            "[concat('Microsoft.Sql/servers/', parameters('SQLServerInstanceName'))]"
+          ],
+          "tags": {
+            "displayName": "SQLDatabaseInstance"
+          },
+          "properties": {
+            "collation": "[parameters('SQLDatabaseInstanceCollation')]",
+            "edition": "[parameters('SQLDatabaseInstanceEdition')]",
+            "maxSizeBytes": "268435456000",
+            "requestedServiceObjectiveName": "[parameters('RequestedServiceObjectiveName')]"
+          }
+        },
+        {
+          "name": "AllowAllWindowsAzureIps",
+          "type": "firewallrules",
+          "location": "[parameters('SQLServerInstanceLocation')]",
+          "apiVersion": "2014-04-01-preview",
+          "dependsOn": [
+            "[concat('Microsoft.Sql/servers/', parameters('SQLServerInstanceName'))]"
+          ],
+          "properties": {
+            "startIpAddress": "0.0.0.0",
+            "endIpAddress": "0.0.0.0"
+          }
+        }
+      ]
     }
   ],
   "outputs": {

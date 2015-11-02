@@ -19,6 +19,12 @@
     "SQLServerInstanceLocation": {
       "type": "string"
     },
+    "SQLServerInstanceAdminLogin": {
+      "type": "string"
+    },
+    "SQLServerInstanceAdminLoginPassword": {
+      "type": "securestring"
+    },
     "SQLDatabaseInstanceCollation": {
       "type": "string",
       "defaultValue": "SQL_Latin1_General_CP1_CI_AS"
@@ -72,6 +78,8 @@
           "SQLDatabaseInstanceEdition": { "value": "[parameters('SQLDatabaseInstanceEdition')]" },
           "SQLServerInstanceName": { "value": "[parameters('SQLServerInstanceName')]" },
           "SQLServerInstanceLocation": { "value": "[parameters('SQLServerInstanceLocation')]" },
+          "SQLServerInstanceAdminLogin": { "value": "paramateres('SQLServerInstanceAdminLogin')" },
+          "SQLServerInstanceAdminLoginPassword": {"value": "parameters('SQLServerInstanceAdminLoginPassword')"},
           "RequestedServiceObjectiveName": { "value": "[parameters('RequestedServiceObjectiveName')]" }
         }
       }

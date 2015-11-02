@@ -6,6 +6,8 @@
     "EnvironmentName": { "value": "" },
     "SQLServerInstanceName": { "value": "" },
     "SQLServerInstanceLocation": { "value": "West Europe" },
+    "SQLServerInstanceAdminLogin": { "value": "" },
+    "SQLServerInstanceAdminLoginPassword": { "value": "" },
     "SQLDatabaseInstanceEdition": { "value": "Standard" },
     "RequestedServiceObjectiveName": { "value": "S0" }
   }
