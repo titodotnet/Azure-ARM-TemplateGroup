@@ -12,7 +12,6 @@
       "name": "[parameters('AppInsightsName')]",
       "type": "Microsoft.Insights/components",
       "location": "Central US",
-      "tags": { "displayName": "AppInsightsInstance" },
       "properties": {
         "ApplicationId": "[parameters('AppInsightsName')]",
         "Application_Type": "web"
