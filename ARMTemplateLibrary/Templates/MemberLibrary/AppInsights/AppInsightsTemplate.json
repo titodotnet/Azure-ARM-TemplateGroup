@@ -12,13 +12,11 @@
       "name": "[parameters('AppInsightsName')]",
       "type": "Microsoft.Insights/components",
       "location": "Central US",
-      "dependsOn": [ ],
       "tags": { "displayName": "AppInsightsInstance" },
       "properties": {
         "ApplicationId": "[parameters('AppInsightsName')]",
         "Application_Type": "web"
-      },
-      "kind": "web"
+      }
     }
   ],
   "outputs": {
