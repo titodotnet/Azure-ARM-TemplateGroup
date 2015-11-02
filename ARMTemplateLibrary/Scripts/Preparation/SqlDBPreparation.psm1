@@ -9,12 +9,6 @@ $SqlDBParameterHash = New-Object -TypeName Hashtable
 <#
 	.Synopsis
 	Add Sql DB dynamic parameters.
-
-	.ParameterFilePath
-	Path of the Parameter file
-
-	.UpdateParameterFilePath
-	Path of the update paramter file
 #>
 function Add-SqlDBDynamicParams{
 	

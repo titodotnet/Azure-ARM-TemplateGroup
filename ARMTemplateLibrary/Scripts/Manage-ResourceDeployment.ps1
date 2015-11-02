@@ -7,6 +7,7 @@ Import-Module (Join-Path $PSScriptRoot "Common\Utility.psm1") -DisableNameChecki
 
 Import-Module (Join-Path $PSScriptRoot "Preparation\SQLServerPreparation.psm1") -DisableNameChecking
 Import-Module (Join-Path $PSScriptRoot "Preparation\SqlDBPreparation.psm1") -DisableNameChecking
+Import-Module (Join-Path $PSScriptRoot "Preparation\ApplicationPreparation.psm1") -DisableNameChecking
 
 
 $TemplateFile = '..\Templates\DeploymentTemplate.json'
@@ -25,6 +26,11 @@ $SqlDBParameterTemplatePath = [System.IO.Path]::Combine($PSScriptRoot, $SqlDBPar
 
 $SqlDBUpdatedParameterTemplatePath = "..\Templates\MainTemplate\SqlDB\SqlDBDeploymentTemplateUpdated.param.{0}.json" -f $DeploymentConfig
 $SqlDBUpdatedParameterTemplatePath = [System.IO.Path]::Combine($PSScriptRoot, $SqlDBUpdatedParameterTemplatePath)
+
+$ApplicationDeploymentTemplatePath = [System.IO.Path]::Combine($PSScriptRoot, "..\Templates\MainTemplate\Application\ApplicationDeploymentTemplate.json")
+$ApplicationDeploymentParameterTemplatePath = [System.IO.Path]::Combine($PSScriptRoot, "..\Templates\MainTemplate\Application\ApplicationDeploymentTemplate.param.{0}.json") -f $DeploymentConfig
+$ApplicationDeploymentUpdatedParameterTemplatePath = [System.IO.Path]::Combine($PSScriptRoot, "..\Templates\MainTemplate\Application\ApplicationDeploymentTemplateUpdated.param.{0}.json") -f $DeploymentConfig
+
 
 <#
 	.Synopsis
@@ -65,3 +71,6 @@ Upgrade-SqlServer -SqlServerResourceGroupName $DBResourceGroupName -SqlServerNam
 
 # Create Sql DB deployment
 Create-SqlDBDeployment -ParameterFilePath $SqlDBParameterTemplatePath -UpdateParameterFilePath $SqlDBUpdatedParameterTemplatePath -TemplateFilePath $SqlDBDeploymentTemplatePath -SqlDBResourceGroupName $DBResourceGroupName
+
+# Create Application deployment
+Create-ApplicationDeployment -ParameterFilePath $ApplicationDeploymentParameterTemplatePath -UpdateParameterFilePath $ApplicationDeploymentUpdatedParameterTemplatePath -TemplateFilePath $ApplicationDeploymentTemplatePath -ApplicationResourceGroupName $DBResourceGroupName

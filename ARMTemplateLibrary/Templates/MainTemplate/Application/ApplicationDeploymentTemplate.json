@@ -1,0 +1,52 @@
+﻿{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "DeploymentConfig": {
+      "type": "string",
+      "defaultValue": "Dev",
+      "allowedValues": [
+        "Dev",
+        "Prod"
+      ]
+    },
+    "EnvironmentName": {
+      "type": "string"
+    }
+  },
+  "variables": {
+    "TemplateBaseUrl": "https://github.com/titodotnet/Azure-ARM-TemplateGroup/raw/master/ARMTemplateLibrary/Templates/MemberLibrary/",
+    "DeploymentConfigSettings": {
+      "Dev": {
+        "AppInsightsTemplate": "AppInsights/AppInsightsTemplate.json"
+      },
+      "Prod": {
+        "AppInsightsTemplate": "AppInsights/AppInsightsTemplate.json"
+      }
+    },
+    "CurrentDeploymentConfig": "[variables('DeploymentConfigSettings')[parameters('DeploymentConfig')]]",
+    "AppInsightsTemplate": "[concat(variables('TemplateBaseUrl'),variables('CurrentDeploymentConfig').AppInsightsTemplate)]",
+    "AppInsightsName": "[concat('titotestappinsights',parameters('EnvironmentName'))]"
+  },
+  "resources": [
+    {
+      "name": "AppInsightsNestedTemplate",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "dependsOn": [ ],
+      "tags": {
+        "displayName": "AppInsightsNestedTemplate"
+      },
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('AppInsightsTemplate')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": { }
+      }
+    }
+  ],
+  "outputs": {
+  }
+}
