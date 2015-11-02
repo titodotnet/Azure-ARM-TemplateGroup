@@ -33,17 +33,15 @@
       "name": "AppInsightsNestedTemplate",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
-      "dependsOn": [ ],
-      "tags": {
-        "displayName": "AppInsightsNestedTemplate"
-      },
       "properties": {
         "mode": "Incremental",
         "templateLink": {
           "uri": "[variables('AppInsightsTemplate')]",
           "contentVersion": "1.0.0.0"
         },
-        "parameters": { }
+        "parameters": {
+          "AppInsightsName": { "value": "[variables('AppInsightsName')]" }
+        }
       }
     }
   ],
