@@ -78,8 +78,8 @@
           "SQLDatabaseInstanceEdition": { "value": "[parameters('SQLDatabaseInstanceEdition')]" },
           "SQLServerInstanceName": { "value": "[parameters('SQLServerInstanceName')]" },
           "SQLServerInstanceLocation": { "value": "[parameters('SQLServerInstanceLocation')]" },
-          "SQLServerInstanceAdminLogin": { "value": "paramateres('SQLServerInstanceAdminLogin')" },
-          "SQLServerInstanceAdminLoginPassword": {"value": "parameters('SQLServerInstanceAdminLoginPassword')"},
+          "SQLServerInstanceAdminLogin": { "value": "[parameters('SQLServerInstanceAdminLogin')]" },
+          "SQLServerInstanceAdminLoginPassword": {"value": "[parameters('SQLServerInstanceAdminLoginPassword')]"},
           "RequestedServiceObjectiveName": { "value": "[parameters('RequestedServiceObjectiveName')]" }
         }
       }

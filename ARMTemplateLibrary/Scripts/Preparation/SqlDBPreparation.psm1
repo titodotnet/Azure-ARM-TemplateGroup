@@ -25,12 +25,16 @@ function Add-SqlDBDynamicParams{
 	$SqlDbAdminUserParameterName = "SQLServerInstanceAdminLogin"
 	$SqlDbAdminPasswordParameterName = "SQLServerInstanceAdminLoginPassword"
 	$EnvironmentParameterName = "EnvironmentName"
+
+	# Get DB credentials - Duplicate to address if server creation scenario is skipped
+	$DbServerAdminCredentials = Get-Credential -Message "Please enter OSE database credential"
+	$SqlDbAdminPasswordSecureString = $DbServerAdminCredentials.GetNetworkCredential().Password
 		
 	# Add dynamic details to hash table
 	$SqlDBParameterHash.Add($SqlServerLocationName, $Location)
 	$SqlDBParameterHash.Add($SqlServerInstanceParameterName, $SqlServerName)
 	$SqlDBParameterHash.Add($EnvironmentParameterName, $Environment)
-	$SqlDBParameterHash.Add($SqlDbAdminUserParameterName, $DbServerAdminCredentials)
+	$SqlDBParameterHash.Add($SqlDbAdminUserParameterName, $DbServerAdminCredentials.UserName)
 	$SqlDBParameterHash.Add($SqlDbAdminPasswordParameterName, $SqlDbAdminPasswordSecureString)
 }
 
