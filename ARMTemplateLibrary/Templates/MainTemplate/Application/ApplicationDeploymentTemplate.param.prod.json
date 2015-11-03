@@ -3,6 +3,8 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "DeploymentConfig": {"value": "Dev"},
-    "EnvironmentName": { "value": "" }
+    "EnvironmentName": { "value": "" },
+    "SearchLocation": { "value": "" },
+    "SearchSku": { "value": "standard" }
   }
 }

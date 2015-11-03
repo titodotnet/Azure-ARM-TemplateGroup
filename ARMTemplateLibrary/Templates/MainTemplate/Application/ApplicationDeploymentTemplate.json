@@ -12,21 +12,31 @@
     },
     "EnvironmentName": {
       "type": "string"
+    },
+    "SearchLocation": {
+      "type": "string"
+    },
+    "SearchSku": {
+      "type": "string"
     }
   },
   "variables": {
     "TemplateBaseUrl": "https://github.com/titodotnet/Azure-ARM-TemplateGroup/raw/master/ARMTemplateLibrary/Templates/MemberLibrary/",
     "DeploymentConfigSettings": {
       "Dev": {
-        "AppInsightsTemplate": "AppInsights/AppInsightsTemplate.json"
+        "AppInsightsTemplate": "AppInsights/AppInsightsTemplate.json",
+        "SearchTemplate": "Search/SearchTemplate.json"
       },
       "Prod": {
-        "AppInsightsTemplate": "AppInsights/AppInsightsTemplate.json"
+        "AppInsightsTemplate": "AppInsights/AppInsightsTemplate.json",
+        "SearchTemplate": "Search/SearchTemplate.json"
       }
     },
     "CurrentDeploymentConfig": "[variables('DeploymentConfigSettings')[parameters('DeploymentConfig')]]",
     "AppInsightsTemplate": "[concat(variables('TemplateBaseUrl'),variables('CurrentDeploymentConfig').AppInsightsTemplate)]",
-    "AppInsightsName": "[concat('titotestappinsights',parameters('EnvironmentName'))]"
+    "AppInsightsName": "[concat('titotestappinsights',parameters('EnvironmentName'))]",
+    "SearchTemplate": "[concat(variables('TemplateBaseUrl'),variables('CurrentDeploymentConfig').SearchTemplate)]",
+    "SearchServiceName": "[concat('titotestsearch',parameters('EnvironmentName'))]"
   },
   "resources": [
     {
@@ -41,6 +51,23 @@
         },
         "parameters": {
           "AppInsightsName": { "value": "[variables('AppInsightsName')]" }
+        }
+      }
+    },
+    {
+      "name": "SearchNestedTemplate",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('SearchTemplate')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "SearchServiceName": { "value": "[variables('SearchServiceName')]" },
+          "SearchLocation": { "value": "[parameters('SearchLocation')]" },
+          "SearchSku": { "value": "[parameters('SearchSku')]" }
         }
       }
     }

@@ -16,8 +16,10 @@ function Add-ApplicationDeploymentDynamicParams{
 	Write-Output "Preparing Application deployment dynamic params"
 	
 	$EnvironmentParameterName = "EnvironmentName"
+	$SearchLocationParametername = "SearchLocation"
 
 	$ApplicationParameterHash.Add($EnvironmentParameterName,$Environment)
+	$ApplicationParameterHash.Add($SearchLocationParametername,$SearchServiceLocation)
 }
 
 

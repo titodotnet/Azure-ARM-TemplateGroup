@@ -1,0 +1,37 @@
+﻿{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "SearchServiceName": {
+      "type": "string"
+    },
+    "SearchLocation": {
+      "type": "string"
+    },
+    "SearchSku": {
+      "type": "string"
+    }
+  },
+  "variables": {
+  },
+  "resources": [
+    {
+      "apiVersion": "2015-02-28",
+      "name": "[parameters('SearchServiceName')]",
+      "type": "Microsoft.Search/searchServices",
+      "location": "[parameters('SearchLocation')]",
+      "tags": {
+        "displayName": "SearchInstance"
+      },
+      "properties": {
+        "sku": {
+          "name": "[parameters('SearchSku')]"
+        },
+        "replicaCount": "1",
+        "partitionCount": "1"
+      }
+    }
+  ],
+  "outputs": {
+  }
+}
