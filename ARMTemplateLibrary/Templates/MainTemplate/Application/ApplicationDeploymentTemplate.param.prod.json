@@ -11,7 +11,7 @@
     "RedisCacheInstanceLocation": { "value": "Central US" },
     "RedisCacheInstanceSKUName": { "value": "Standard" },
     "RedisCacheInstanceSKUFamily": { "value": "C" },
-    "RedisCacheInstanceSKUCapacity": { "value": "1" },
+    "RedisCacheInstanceSKUCapacity": { "value": 1 },
     "RedisCacheInstanceRedisVersion": { "value": "3.0" }
   }
 }

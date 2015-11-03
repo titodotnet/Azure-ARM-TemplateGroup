@@ -88,12 +88,14 @@
       "Dev": {
         "AppInsightsTemplate": "AppInsights/AppInsightsTemplate.json",
         "SearchTemplate": "Search/SearchTemplate.json",
-        "StorageTemplate": "Storage/StorageTemplate.json"
+        "StorageTemplate": "Storage/StorageTemplate.json",
+        "RedisCacheTemplate": "Redis/RedisCacheTemplate.json"
       },
       "Prod": {
         "AppInsightsTemplate": "AppInsights/AppInsightsTemplate.json",
         "SearchTemplate": "Search/SearchTemplate.json",
-        "StorageTemplate": "Storage/StorageTemplate.json"
+        "StorageTemplate": "Storage/StorageTemplate.json",
+        "RedisCacheTemplate": "Redis/RedisCacheTemplate.json"
       }
     },
     "CurrentDeploymentConfig": "[variables('DeploymentConfigSettings')[parameters('DeploymentConfig')]]",
@@ -103,7 +105,7 @@
     "SearchServiceName": "[concat('titosearch',parameters('EnvironmentName'))]",
     "StorageTemplate": "[concat(variables('TemplateBaseUrl'),variables('CurrentDeploymentConfig').StorageTemplate)]",
     "StorageInstanceName": "[concat('titoteststorage',parameters('EnvironmentName'))]",
-    "RedisCacheTemplate": "[concat(variables('TemplateBaseUrl'),variables('CurrentDeploymentConfig').StorageTemplate)]",
+    "RedisCacheTemplate": "[concat(variables('TemplateBaseUrl'),variables('CurrentDeploymentConfig').RedisCacheTemplate)]",
     "RedisCacheInstanceName": "[concat('titotestcache',parameters('EnvironmentName'))]"
   },
   "resources": [
