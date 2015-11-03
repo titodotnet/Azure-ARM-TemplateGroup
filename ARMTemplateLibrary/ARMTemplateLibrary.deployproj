@@ -51,6 +51,7 @@
     <None Include="Templates\MainTemplate\SqlDB\SqlDBDeploymentTemplate.param.dev.json" />
     <None Include="Templates\MainTemplate\SqlDB\SqlDBDeploymentTemplate.param.prod.json" />
     <None Include="Templates\MemberLibrary\AppInsights\AppInsightsTemplate.json" />
+    <None Include="Templates\MemberLibrary\Redis\RedisCacheTemplate.json" />
     <None Include="Templates\MemberLibrary\Search\SearchTemplate.json" />
     <None Include="Templates\MemberLibrary\SqlDB\SqlDBTemplate.json" />
     <None Include="Templates\MemberLibrary\SQLServerTemplate.json" />

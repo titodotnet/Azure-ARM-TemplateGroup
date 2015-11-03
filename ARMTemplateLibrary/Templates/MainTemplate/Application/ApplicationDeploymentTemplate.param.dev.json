@@ -7,7 +7,11 @@
     "SearchLocation": { "value": "" },
     "SearchSku": { "value": "standard" },
     "StorageInstanceLocation": { "value": "West Europe" },
-    "StorageInstanceType": { "value": "Standard_LRS" }
-
+    "StorageInstanceType": { "value": "Standard_LRS" },
+    "RedisCacheInstanceLocation": { "value": "West Europe" },
+    "RedisCacheInstanceSKUName": { "value": "Standard" },
+    "RedisCacheInstanceSKUFamily": { "value": "C" },
+    "RedisCacheInstanceSKUCapacity": { "value": "1" },
+    "RedisCacheInstanceRedisVersion": { "value": "3.0" }
   }
 }

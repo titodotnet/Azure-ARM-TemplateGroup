@@ -41,6 +41,45 @@
         "Standard_RAGRS",
         "Premium_LRS"
       ]
+    },
+    "RedisCacheInstanceLocation": {
+      "type": "string"
+    },
+    "RedisCacheInstanceSKUName": {
+      "type": "string",
+      "allowedValues": [
+        "Basic",
+        "Standard"
+      ],
+      "defaultValue": "Standard"
+    },
+    "RedisCacheInstanceSKUFamily": {
+      "type": "string",
+      "allowedValues": [
+        "C"
+      ],
+      "defaultValue": "C"
+    },
+    "RedisCacheInstanceSKUCapacity": {
+      "type": "int",
+      "allowedValues": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "defaultValue": 1
+    },
+    "RedisCacheInstanceRedisVersion": {
+      "type": "string",
+      "allowedValues": [
+        "2.8",
+        "3.0"
+      ],
+      "defaultValue": "3.0"
     }
   },
   "variables": {
@@ -63,7 +102,9 @@
     "SearchTemplate": "[concat(variables('TemplateBaseUrl'),variables('CurrentDeploymentConfig').SearchTemplate)]",
     "SearchServiceName": "[concat('titosearch',parameters('EnvironmentName'))]",
     "StorageTemplate": "[concat(variables('TemplateBaseUrl'),variables('CurrentDeploymentConfig').StorageTemplate)]",
-    "StorageInstanceName": "[concat('titostoragetest',parameters('EnvironmentName'))]"
+    "StorageInstanceName": "[concat('titoteststorage',parameters('EnvironmentName'))]",
+    "RedisCacheTemplate": "[concat(variables('TemplateBaseUrl'),variables('CurrentDeploymentConfig').StorageTemplate)]",
+    "RedisCacheInstanceName": "[concat('titotestcache',parameters('EnvironmentName'))]"
   },
   "resources": [
     {
@@ -112,6 +153,26 @@
           "StorageInstanceName": { "value": "[variables('StorageInstanceName')]" },
           "StorageInstanceType": { "value": "[parameters('StorageInstanceType')]" },
           "StorageInstanceLocation": { "value": "[parameters('StorageInstanceLocation')]" }
+        }
+      }
+    },
+    {
+      "name": "RedisCacheNestedTemplate",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('RedisCacheTemplate')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "RedisCacheInstanceName": { "value": "[variables('RedisCacheInstanceName')]" },
+          "RedisCacheInstanceLocation": { "value": "[parameters('RedisCacheInstanceLocation')]" },
+          "RedisCacheInstanceSKUName": { "value": "[parameters('RedisCacheInstanceSKUName')]" },
+          "RedisCacheInstanceSKUFamily": { "value": "[parameters('RedisCacheInstanceSKUFamily')]" },
+          "RedisCacheInstanceSKUCapacity": { "value": "[parameters('RedisCacheInstanceSKUCapacity')]" },
+          "RedisCacheInstanceRedisVersion": { "value": "[parameters('RedisCacheInstanceRedisVersion')]" }
         }
       }
     }

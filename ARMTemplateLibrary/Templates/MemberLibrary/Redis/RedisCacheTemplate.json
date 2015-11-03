@@ -1,0 +1,72 @@
+﻿{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "RedisCacheInstanceName": {
+            "type": "string"
+        },
+        "RedisCacheInstanceLocation": {
+            "type": "string"
+        },
+        "RedisCacheInstanceSKUName": {
+            "type": "string",
+            "allowedValues": [
+                "Basic",
+                "Standard"
+            ],
+            "defaultValue": "Standard"
+        },
+        "RedisCacheInstanceSKUFamily": {
+            "type": "string",
+            "allowedValues": [
+                "C"
+            ],
+            "defaultValue": "C"
+        },
+        "RedisCacheInstanceSKUCapacity": {
+            "type": "int",
+            "allowedValues": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6
+            ],
+            "defaultValue": 1
+        },
+        "RedisCacheInstanceRedisVersion": {
+            "type": "string",
+            "allowedValues": [
+              "2.8",
+              "3.0"
+            ],
+            "defaultValue": "3.0"
+        }
+    },
+    "variables": {
+    },
+    "resources": [
+        {
+            "name": "[parameters('RedisCacheInstanceName')]",
+            "type": "Microsoft.Cache/Redis",
+            "location": "[parameters('RedisCacheInstanceLocation')]",
+            "apiVersion": "2014-04-01-preview",
+            "dependsOn": [ ],
+            "tags": {
+                "displayName": "RedisCacheInstance"
+            },
+            "properties": {
+                "sku": {
+                    "name": "[parameters('RedisCacheInstanceSKUName')]",
+                    "family": "[parameters('RedisCacheInstanceSKUFamily')]",
+                    "capacity": "[parameters('RedisCacheInstanceSKUCapacity')]"
+                },
+                "redisVersion": "[parameters('RedisCacheInstanceRedisVersion')]"
+            }
+        }
+    ],
+    "outputs": {
+    }
+}
