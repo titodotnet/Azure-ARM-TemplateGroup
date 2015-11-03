@@ -5,6 +5,7 @@
 Import-Module (Join-Path $PSScriptRoot "..\Common\Utility.psm1") -DisableNameChecking
 
 $SQLServerParameterHash = New-Object -TypeName Hashtable
+$DBServerDeploymentNameValue = "titotestdbserverdeploymenttest1"
 
 <#
 	.Synopsis
@@ -92,7 +93,7 @@ function Create-SQLServerDeployment{
 			Create-UpdatedParamaterTemplate -ParameterFilePath $ParameterFilePath -UpdateParameterFilePath $UpdateParameterFilePath -ParameterHash $SQLServerParameterHash
 
 			# Perform new DBResourceGroup deployment
-			New-AzureRmResourceGroupDeployment -ResourceGroupName $SqlServerResourceGroupName -Name "titotestdbserverdeploymenttest1" -TemplateFile $TemplateFilePath -TemplateParameterFile $UpdateParameterFilePath 
+			New-AzureRmResourceGroupDeployment -ResourceGroupName $SqlServerResourceGroupName -Name $DBServerDeploymentNameValue -TemplateFile $TemplateFilePath -TemplateParameterFile $UpdateParameterFilePath 
 		}
 	}	
 }
@@ -147,20 +148,29 @@ function Upgrade-SqlServer{
 				Write-Output "Sql server $SqlServerName is already  with version $($SqlServerResourceInstance.ServerVersion)"
 			}
 			else
-			{
+			{				
+				$SqlServerProvisioningStatus = Get-AzureRmResourceGroupDeployment -ResourceGroupName $SqlServerResourceGroupName -Name $DBServerDeploymentNameValue
+				Write-Output "Waiting for Sql Server $SqlServerName provisoning succeded... - Current state $($SqlServerProvisioningStatus.ProvisioningState)"
+				While($SqlServerProvisioningStatus.ProvisioningState -ne "Succeeded" -and $SqlServerProvisioningStatus.ProvisioningState -ne "Failed")
+				{
+					Start-Sleep -Seconds 5	
+					Write-Host -NoNewline -BackgroundColor Green "."
+					$SqlServerProvisioningStatus = Get-AzureRmResourceGroupDeployment -ResourceGroupName $SqlServerResourceGroupName -Name $DBServerDeploymentNameValue								
+				}
+
 				Write-Output "Start upgrading the sql server $SqlServerName."
 				Start-AzureRmSqlServerUpgrade -ServerVersion $TargetSqlServerVersion -ServerName $SqlServerName -ResourceGroupName $SqlServerResourceGroupName
 				
-				$SqlServerUpgradeStatus = Get-AzureRmResourceGroupDeployment -ResourceGroupName $SqlServerResourceGroupName
+				$SqlServerUpgradeStatus = Get-AzureRmSqlServerUpgrade -ResourceGroupName $SqlServerResourceGroupName -ServerName $SqlServerName
 				Write-Output "Upgrade in progress..."
 				
-				While($SqlServerUpgradeStatus[0].ProvisioningState -ne "Failed" -and $SqlServerUpgradeStatus[0].ProvisioningState -ne "Succeeded"){
-					Start-Sleep -Seconds 10
+				While($SqlServerUpgradeStatus.Status -ne "Failed" -and $SqlServerUpgradeStatus.Status -ne "Succeeded" -and $SqlServerUpgradeStatus.Status -ne "NotStarted"){
+					Start-Sleep -Seconds 5
 					Write-Host -NoNewline -BackgroundColor Green "."
-					$SqlServerUpgradeStatus = Get-AzureRmResourceGroupDeployment -ResourceGroupName $SqlServerResourceGroupName
+					$SqlServerUpgradeStatus = Get-AzureRmSqlServerUpgrade -ResourceGroupName $SqlServerResourceGroupName -ServerName $SqlServerName
 				}
 
-				Write-Output "Upgrade sql server $SqlServerName instantiated."
+				Write-Output "Upgrade sql server $SqlServerName $($SqlServerUpgradeStatus.Status)."
 			}			
 		}		
 	}	

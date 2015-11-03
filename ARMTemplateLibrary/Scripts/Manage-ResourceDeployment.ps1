@@ -66,6 +66,7 @@ Create-DBResourceGroup
 # Create SQL server deployment
 Create-SQLServerDeployment -ParameterFilePath $TemplateParametersFile -UpdateParameterFilePath $UpdatedTemplateParametersFile -TemplateFilePath $TemplateFile -SqlServerResourceGroupName $DBResourceGroupName
 
+# Execute the following upgrade separately if possible to avoid long waiting time and any intermittent issues during the course of time.
 # Upgrade Sql server to version 12.0
 Upgrade-SqlServer -SqlServerResourceGroupName $DBResourceGroupName -SqlServerName $SqlServerName -TargetSqlServerVersion $TargetSqlServerUpgradeVersion
 
