@@ -54,6 +54,7 @@
     <None Include="Templates\MemberLibrary\Search\SearchTemplate.json" />
     <None Include="Templates\MemberLibrary\SqlDB\SqlDBTemplate.json" />
     <None Include="Templates\MemberLibrary\SQLServerTemplate.json" />
+    <None Include="Templates\MemberLibrary\Storage\StorageTemplate.json" />
     <None Include="Templates\Parameter\SQLServerTemplateParameter.json" />
     <None Include="Tools\AzCopy.exe" />
     <None Include="Tools\Microsoft.Data.Edm.dll">

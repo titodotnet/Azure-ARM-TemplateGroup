@@ -5,6 +5,9 @@
     "DeploymentConfig": { "value": "Dev" },
     "EnvironmentName": { "value": "" },
     "SearchLocation": { "value": "" },
-    "SearchSku": { "value": "standard" }
+    "SearchSku": { "value": "standard" },
+    "StorageInstanceLocation": { "value": "West Europe" },
+    "StorageInstanceType": { "value": "Standard_LRS" }
+
   }
 }

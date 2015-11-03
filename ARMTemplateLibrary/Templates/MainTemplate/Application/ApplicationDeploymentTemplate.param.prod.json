@@ -5,6 +5,8 @@
     "DeploymentConfig": {"value": "Dev"},
     "EnvironmentName": { "value": "" },
     "SearchLocation": { "value": "" },
-    "SearchSku": { "value": "standard" }
+    "SearchSku": { "value": "standard" },
+    "StorageInstanceLocation": { "value": "Central US" },
+    "StorageInstanceType": { "value": "Standard_GRS" }
   }
 }
