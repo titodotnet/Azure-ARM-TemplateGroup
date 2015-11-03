@@ -105,7 +105,7 @@
       "properties": {
         "mode": "Incremental",
         "templateLink": {
-          "uri": "[variables('SearchTemplate')]",
+          "uri": "[variables('StorageTemplate')]",
           "contentVersion": "1.0.0.0"
         },
         "parameters": {
